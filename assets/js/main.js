@@ -20,12 +20,14 @@ let favArr = JSON.parse(localStorage.getItem("fav")) || [];
 function displayEmoji(imgArray = []) {
   var xhr = fetch(`${url}${key}${query}`).then(data => data.json()).then(res => {
     userFiles.innerHTML = " ";
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       var htmlText = "";
       htmlText = `
         <span class="img draggable" draggable="true">
           <a data-id="${i}" target="_blank" href="${res.data[i].images.fixed_height_downsampled.url}"><img class="gif" data-id="${i}" src="${res.data[i].images.fixed_height_downsampled.url}"></a>
-          <button data-id="${i}" class="fav">Add To Fav</button>
+          <div class="fav-btn">
+            <button data-id="${i}" class="fav">Add To Fav</button>
+          </div>
         </span>
       `
       displayImg.innerHTML += htmlText;
@@ -51,7 +53,7 @@ function displayInfo() {
 
 function dispFavorite(fav = []) {
   displayImg.innerHTML = " ";
-  fav.forEach((v,i) => {
+  favArr.forEach((v,i) => {
     var favour = `
       <span class="img draggable" draggable="true">
         <a data-id="${i}" target="_blank" href="${v}"><img class="gif" data-id="${i}" src="${v}"></a>
@@ -84,7 +86,7 @@ displayImg.addEventListener("click", function(e) {
     console.log(id);
     favArr.splice(id,1);
     localStorage.setItem('fav', JSON.stringify(favArr));
-    dispFavorite(imgArr);
+    dispFavorite();
   }
 })
 
@@ -102,6 +104,8 @@ navBar.addEventListener("click", function(e) {
     displayEmoji(imgArr);
   }
 })
+
+// Uploading Files
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();

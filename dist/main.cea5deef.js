@@ -204,9 +204,9 @@ function displayEmoji() {
   }).then(function (res) {
     userFiles.innerHTML = " ";
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 6; i++) {
       var htmlText = "";
-      htmlText = "\n        <span class=\"img draggable\" draggable=\"true\">\n          <a data-id=\"".concat(i, "\" target=\"_blank\" href=\"").concat(res.data[i].images.fixed_height_downsampled.url, "\"><img class=\"gif\" data-id=\"").concat(i, "\" src=\"").concat(res.data[i].images.fixed_height_downsampled.url, "\"></a>\n          <button data-id=\"").concat(i, "\" class=\"fav\">Add To Fav</button>\n        </span>\n      ");
+      htmlText = "\n        <span class=\"img draggable\" draggable=\"true\">\n          <a data-id=\"".concat(i, "\" target=\"_blank\" href=\"").concat(res.data[i].images.fixed_height_downsampled.url, "\"><img class=\"gif\" data-id=\"").concat(i, "\" src=\"").concat(res.data[i].images.fixed_height_downsampled.url, "\"></a>\n          <div class=\"fav-btn\">\n            <button data-id=\"").concat(i, "\" class=\"fav\">Add To Fav</button>\n          </div>\n        </span>\n      ");
       displayImg.innerHTML += htmlText;
       drag();
       imgArray.push("".concat(res.data[i].images.fixed_height_downsampled.url));
@@ -231,7 +231,7 @@ function displayInfo() {
 function dispFavorite() {
   var fav = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   displayImg.innerHTML = " ";
-  fav.forEach(function (v, i) {
+  favArr.forEach(function (v, i) {
     var favour = "\n      <span class=\"img draggable\" draggable=\"true\">\n        <a data-id=\"".concat(i, "\" target=\"_blank\" href=\"").concat(v, "\"><img class=\"gif\" data-id=\"").concat(i, "\" src=\"").concat(v, "\"></a>\n        <button data-id=\"").concat(i, "\" class=\"del\">delete</button>\n      </span>\n      ");
     displayImg.innerHTML += favour;
     drag();
@@ -259,7 +259,7 @@ displayImg.addEventListener("click", function (e) {
     console.log(id);
     favArr.splice(id, 1);
     localStorage.setItem('fav', JSON.stringify(favArr));
-    dispFavorite(imgArr);
+    dispFavorite();
   }
 });
 navBar.addEventListener("click", function (e) {
@@ -275,7 +275,8 @@ navBar.addEventListener("click", function (e) {
     form.style.display = "block";
     displayEmoji(imgArr);
   }
-});
+}); // Uploading Files
+
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   displayInfo();
