@@ -104,251 +104,70 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   // Override the current require with this new one
   return newRequire;
-})({"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"assets/css/style.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"assets/js/main.js":[function(require,module,exports) {
-"use strict";
-
-require("../css/style.scss");
-
-var inputText = document.querySelector('.input-text');
-var displayImg = document.querySelector('.display-img');
-var form = document.querySelector('.form');
-var navBar = document.querySelector('.navbar-list');
-var url = "http://api.giphy.com/v1/gifs/search?";
-var query = "";
-var key = "&api_key=4lhG2kbqPHauRqDVhRjW280Rjaznd9J6";
-var img;
-var fileSelector = document.querySelector('.file-selector');
-var userFiles = document.querySelector('.user-files');
-var srcEl;
-var thirdEl;
-var allList = document.querySelector('.all-list');
-var uploadForm = document.querySelector('#upload');
-var status = document.querySelector('#messages');
-var imgArr = [];
-var favArr = JSON.parse(localStorage.getItem("fav")) || [];
-
-function displayEmoji() {
-  var imgArray = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  var xhr = fetch("".concat(url).concat(key).concat(query)).then(function (data) {
-    return data.json();
-  }).then(function (res) {
-    userFiles.innerHTML = " ";
-
-    for (var i = 0; i < 6; i++) {
-      var htmlText = "";
-      htmlText = "\n        <span class=\"img draggable\" draggable=\"true\">\n          <a data-id=\"".concat(i, "\" target=\"_blank\" href=\"").concat(res.data[i].images.fixed_height_downsampled.url, "\"><img class=\"gif\" data-id=\"").concat(i, "\" src=\"").concat(res.data[i].images.fixed_height_downsampled.url, "\"></a>\n          <div class=\"fav-btn\">\n            <button data-id=\"").concat(i, "\" class=\"fav\">Add To Fav</button>\n          </div>\n        </span>\n      ");
-      displayImg.innerHTML += htmlText;
-      drag();
-      imgArray.push("".concat(res.data[i].images.fixed_height_downsampled.url));
-    }
-  });
-  inputText.value = "";
-} // Display Imoji
+})({"assets/js/filedrag.js":[function(require,module,exports) {
+(function () {
+  // getElementById
+  function id(id) {
+    return document.getElementById(id);
+  } // output information
 
 
-function displayInfo() {
-  var text = inputText.value;
-
-  if (inputText.value) {
-    query = "&q=".concat(text);
-    displayEmoji(imgArr);
-  }
-
-  inputText.value = "";
-} // addFavorite
+  function Output(msg) {
+    var m = id("messages");
+    m.innerHTML += msg;
+  } // file drag hover
 
 
-function dispFavorite() {
-  var fav = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  displayImg.innerHTML = " ";
-  favArr.forEach(function (v, i) {
-    var favour = "\n      <span class=\"img draggable\" draggable=\"true\">\n        <a data-id=\"".concat(i, "\" target=\"_blank\" href=\"").concat(v, "\"><img class=\"gif\" data-id=\"").concat(i, "\" src=\"").concat(v, "\"></a>\n        <button data-id=\"").concat(i, "\" class=\"del\">delete</button>\n      </span>\n      ");
-    displayImg.innerHTML += favour;
-    drag();
-  });
-} // Trending
-
-
-function trending() {
-  displayImg.innerHTML = " ";
-  query = "&q=".concat(trending);
-  displayEmoji(imgArr);
-}
-
-displayImg.addEventListener("click", function (e) {
-  if (e.target.classList.contains('fav')) {
-    var id = e.target.dataset.id;
-    if (favArr.includes(imgArr[id])) return;
-    favArr.push(imgArr[id]);
-    localStorage.setItem('fav', JSON.stringify(favArr));
-    JSON.parse(localStorage.getItem('fav'));
-  }
-
-  if (e.target.classList.contains('del')) {
-    var id = e.target.dataset.id;
-    console.log(id);
-    favArr.splice(id, 1);
-    localStorage.setItem('fav', JSON.stringify(favArr));
-    dispFavorite();
-  }
-});
-navBar.addEventListener("click", function (e) {
-  if (e.target.classList.contains('trending-list')) {
-    trending();
-  }
-
-  if (e.target.classList.contains('favorite-list')) {
-    dispFavorite(favArr);
-  }
-
-  if (e.target.classList.contains('all-list')) {
-    form.style.display = "block";
-    displayEmoji(imgArr);
-  }
-
-  if (e.target.classList.contains('upload-list')) {
-    uploadForm.style.display = "block";
-    status.style.display = "block";
-  }
-});
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-  displayInfo();
-}); // Drag and drop
-
-function dragStart(e) {
-  e.target.style.opacity = "0.5";
-  srcEl = e.target;
-  e.dataTransfer.effectAllowed = 'move';
-  e.dataTransfer.setData('text/html', e.target.innerHTML);
-}
-
-function dragEnter(e) {
-  e.target.classList.add('over');
-}
-
-function dragLeave(e) {
-  e.stopPropagation();
-  e.target.classList.remove('over');
-}
-
-function dragOver(e) {
-  if (e.preventDefault) {
+  function FileDragHover(e) {
+    e.stopPropagation();
     e.preventDefault();
+    e.target.className = e.type == "dragover" ? "hover" : "";
+  } // file selection
+
+
+  function FileSelectHandler(e) {
+    // cancel event and hover styling
+    FileDragHover(e); // fetch FileList object
+
+    var files = e.target.files || e.dataTransfer.files; // process all File objects
+
+    for (var i = 0, f; f = files[i]; i++) {
+      ParseFile(f);
+    }
+  } // output file information
+
+
+  function ParseFile(file) {
+    Output("<img src=\"".concat(URL.createObjectURL(file), "\" />"));
+  } // initialize
+
+
+  function Init() {
+    var fileselect = id("fileselect"),
+        filedrag = id("filedrag"),
+        submitbutton = id("submitbutton"); // file select
+
+    fileselect.addEventListener("change", FileSelectHandler, false); // is XHR2 available?
+
+    var xhr = new XMLHttpRequest();
+
+    if (xhr.upload) {
+      // file drop
+      filedrag.addEventListener("dragover", FileDragHover, false);
+      filedrag.addEventListener("dragleave", FileDragHover, false);
+      filedrag.addEventListener("drop", FileSelectHandler, false);
+      filedrag.style.display = "block"; // remove submit button
+
+      submitbutton.style.display = "none";
+    }
+  } // call initialization file
+
+
+  if (window.File && window.FileList && window.FileReader) {
+    Init();
   }
-
-  e.dataTransfer.dropEffect = 'move';
-  return false;
-}
-
-function dragDrop(e) {
-  console.log('drag drop');
-
-  if (srcEl != e.target) {
-    thirdEl = srcEl.src;
-    srcEl.src = e.target.src;
-    e.target.src = thirdEl;
-  }
-
-  return false;
-}
-
-function dragEnd(e) {
-  var col = document.querySelectorAll('.draggable');
-  col.forEach(function (element) {
-    element.classList.remove('over');
-  });
-  e.target.style.opacity = '1';
-}
-
-function drag() {
-  var drag1 = document.querySelectorAll('.draggable');
-  drag1.forEach(function (item) {
-    addEvent(item);
-  });
-}
-
-function addEvent(el) {
-  el.addEventListener('dragstart', dragStart, false);
-  el.addEventListener('dragenter', dragEnter, false);
-  el.addEventListener('dragover', dragOver, false);
-  el.addEventListener('dragleave', dragLeave, false);
-  el.addEventListener('drop', dragDrop, false);
-  el.addEventListener('dragend', dragEnd, false);
-}
-},{"../css/style.scss":"assets/css/style.scss"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+})();
+},{}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -517,5 +336,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},["../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","assets/js/main.js"], null)
-//# sourceMappingURL=/main.cea5deef.map
+},{}]},{},["../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","assets/js/filedrag.js"], null)
+//# sourceMappingURL=/filedrag.37beab99.map

@@ -20,18 +20,29 @@
   <form action="" class="form">
     <input type="text" class="input-text">
   </form>
-  <div class="upload-div">
-    <div class="dnd">
-      <div>Drag and Drop your gif here</div>
-      <span></span>
-    </div>
-    <form action="" method="POST" class="upload-form">
-      <input type="file" multiple="" class="file-selector"> 
-      <button type="submit" value="Add File" class="file-btn">Add File</button>
-    </form>
-  </div>
+ 
+  <!-- Upload form starts -->
+
+  <form id="upload" action="index.html" method="POST" enctype="multipart/form-data">
+		<fieldset>
+			<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000">
+			<div>
+				<input type="file" id="fileselect" multiple="multiple">
+				<div id="filedrag">or drop files here</div>
+			</div>
+			<div id="submitbutton">
+				<button type="submit">Upload Files</button>
+			</div>
+		</fieldset>
+  </form>
+  
+  <!-- Upload form ends -->
+
+	<div id="messages"></div>
+  
   <div class="user-files" draggable="true"></div>
   <div class="display-img"></div>
   <script src="/main.cea5deef.js"></script>
+  <script src="/filedrag.37beab99.js"></script>
 </body>
 </html>

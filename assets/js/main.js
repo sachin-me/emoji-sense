@@ -13,8 +13,8 @@ var userFiles = document.querySelector('.user-files');
 let srcEl;
 let thirdEl;
 let allList = document.querySelector('.all-list');
-let dnd = document.querySelector('.dnd');
-let uploadForm = document.querySelector('.upload-form');
+let uploadForm = document.querySelector('#upload');
+let status = document.querySelector('#messages');
 
 var imgArr = [];
 let favArr = JSON.parse(localStorage.getItem("fav")) || [];
@@ -107,7 +107,7 @@ navBar.addEventListener("click", function(e) {
   }
   if (e.target.classList.contains('upload-list')) {
     uploadForm.style.display = "block";
-    dnd.style.display = "block";
+    status.style.display = "block";
   }
 })
 
@@ -115,24 +115,6 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   displayInfo();
 });
-
-// Uploading Files
-
-uploadForm.addEventListener("submit", function(e) {
-  e.preventDefault();
-  let files = fileSelector.files;
-  if(files.length) {
-    for(const file of files) {
-      displayImg.innerHTML = " ";
-      userFiles.innerHTML += `
-        <img src="${URL.createObjectURL(file)}" draggable="true" class="draggable" />
-      `;
-      drag();
-    }
-  }
-
-})
-
 
 // Drag and drop
 
