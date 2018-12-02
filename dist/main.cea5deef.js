@@ -194,6 +194,8 @@ var userFiles = document.querySelector('.user-files');
 var srcEl;
 var thirdEl;
 var allList = document.querySelector('.all-list');
+var dnd = document.querySelector('.dnd');
+var uploadForm = document.querySelector('.upload-form');
 var imgArr = [];
 var favArr = JSON.parse(localStorage.getItem("fav")) || [];
 
@@ -275,11 +277,19 @@ navBar.addEventListener("click", function (e) {
     form.style.display = "block";
     displayEmoji(imgArr);
   }
-}); // Uploading Files
 
+  if (e.target.classList.contains('upload-list')) {
+    uploadForm.style.display = "block";
+    dnd.style.display = "block";
+  }
+});
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   displayInfo();
+}); // Uploading Files
+
+uploadForm.addEventListener("submit", function (e) {
+  e.preventDefault();
   var files = fileSelector.files;
 
   if (files.length) {
@@ -398,7 +408,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33627" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38065" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

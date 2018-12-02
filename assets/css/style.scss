@@ -72,3 +72,28 @@ body {
 .fav-btn {
   text-align: center;
 }
+.upload-form {
+  display: none;
+  button {
+    background: transparent;
+    border: 1px solid rgb(220, 20, 113);
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+}
+.upload-div {
+  margin-top: 120px;
+  text-align: center;
+  .dnd {
+    display: none;
+    div {
+      border: 1px solid #dc1471;
+      padding: 20px;
+      margin: 10px;
+      display: inline-block;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+}

@@ -77,3 +77,30 @@ body {
 .fav-btn {
   text-align: center;
 }
+
+.upload-form {
+  display: none;
+}
+.upload-form button {
+  background: transparent;
+  border: 1px solid #dc1471;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.upload-div {
+  margin-top: 120px;
+  text-align: center;
+}
+.upload-div .dnd {
+  display: none;
+}
+.upload-div .dnd div {
+  border: 1px solid #dc1471;
+  padding: 20px;
+  margin: 10px;
+  display: inline-block;
+  border-radius: 5px;
+  cursor: pointer;
+}

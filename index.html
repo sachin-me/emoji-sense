@@ -13,14 +13,23 @@
         <li class="all-list">All</li>
         <li class="favorite-list">Favorite</li>
         <li class="trending-list">Trending</li>
+        <li class="upload-list">Upload</li>
       </ul>
     </nav>
   </header>
   <form action="" class="form">
     <input type="text" class="input-text">
-    <input type="file" multiple class="file-selector"> 
-    <button type="submit" value="Add File" class="file-btn">Add File</button>
   </form>
+  <div class="upload-div">
+    <div class="dnd">
+      <div>Drag and Drop your gif here</div>
+      <span></span>
+    </div>
+    <form action="" method="POST" class="upload-form">
+      <input type="file" multiple class="file-selector"> 
+      <button type="submit" value="Add File" class="file-btn">Add File</button>
+    </form>
+  </div>
   <div class="user-files" draggable="true"></div>
   <div class="display-img"></div>
   <script src="./assets/js/main.js"></script>
