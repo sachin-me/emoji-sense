@@ -234,7 +234,7 @@ function dispFavorite() {
   var fav = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   displayImg.innerHTML = " ";
   favArr.forEach(function (v, i) {
-    var favour = "\n      <span class=\"img draggable\" draggable=\"true\">\n        <a data-id=\"".concat(i, "\" target=\"_blank\" href=\"").concat(v, "\"><img class=\"gif\" data-id=\"").concat(i, "\" src=\"").concat(v, "\"></a>\n        <button data-id=\"").concat(i, "\" class=\"del\">delete</button>\n      </span>\n      ");
+    var favour = "\n      <span class=\"img draggable\" draggable=\"true\">\n        <a data-id=\"".concat(i, "\" target=\"_blank\" href=\"").concat(v, "\"><img class=\"gif\" data-id=\"").concat(i, "\" src=\"").concat(v, "\"></a>\n        <div class=\"fav-del\">\n          <button data-id=\"").concat(i, "\" class=\"del\">delete</button>\n        </div>\n      </span>\n      ");
     displayImg.innerHTML += favour;
     drag();
   });
@@ -266,19 +266,26 @@ displayImg.addEventListener("click", function (e) {
 });
 navBar.addEventListener("click", function (e) {
   if (e.target.classList.contains('trending-list')) {
+    form.style.display = "none";
+    uploadForm.style.display = "none";
     trending();
   }
 
   if (e.target.classList.contains('favorite-list')) {
+    form.style.display = "none";
+    uploadForm.style.display = "none";
     dispFavorite(favArr);
   }
 
   if (e.target.classList.contains('all-list')) {
+    status.style.display = "none";
+    uploadForm.style.display = "none";
     form.style.display = "block";
     displayEmoji(imgArr);
   }
 
   if (e.target.classList.contains('upload-list')) {
+    form.style.display = "none";
     uploadForm.style.display = "block";
     status.style.display = "block";
   }

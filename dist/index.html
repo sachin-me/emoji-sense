@@ -18,7 +18,7 @@
     </nav>
   </header>
   <form action="" class="form">
-    <input type="text" class="input-text">
+    <input type="text" class="input-text" placeholder="search your gif here...">
   </form>
  
   <!-- Upload form starts -->
@@ -26,9 +26,11 @@
   <form id="upload" action="index.html" method="POST" enctype="multipart/form-data">
 		<fieldset>
 			<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000">
-			<div>
-				<input type="file" id="fileselect" multiple="multiple">
-				<div id="filedrag">or drop files here</div>
+			<div class="file-div">
+        <div class="multifile-div">
+				  <input type="file" id="fileselect" multiple="multiple">
+        </div>
+          <div id="filedrag">or drop files here</div>
 			</div>
 			<div id="submitbutton">
 				<button type="submit">Upload Files</button>

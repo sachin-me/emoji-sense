@@ -59,7 +59,9 @@ function dispFavorite(fav = []) {
     var favour = `
       <span class="img draggable" draggable="true">
         <a data-id="${i}" target="_blank" href="${v}"><img class="gif" data-id="${i}" src="${v}"></a>
-        <button data-id="${i}" class="del">delete</button>
+        <div class="fav-del">
+          <button data-id="${i}" class="del">delete</button>
+        </div>
       </span>
       `;
     displayImg.innerHTML += favour;
@@ -96,16 +98,23 @@ displayImg.addEventListener("click", function(e) {
 
 navBar.addEventListener("click", function(e) {
   if (e.target.classList.contains('trending-list')) {
+    form.style.display = "none";
+    uploadForm.style.display = "none";
     trending();
   }
   if (e.target.classList.contains('favorite-list')) {
+    form.style.display = "none";
+    uploadForm.style.display = "none";
     dispFavorite(favArr);
   }
   if (e.target.classList.contains('all-list')) {
+    status.style.display = "none";
+    uploadForm.style.display = "none";
     form.style.display = "block";
     displayEmoji(imgArr);
   }
   if (e.target.classList.contains('upload-list')) {
+    form.style.display = "none";
     uploadForm.style.display = "block";
     status.style.display = "block";
   }
